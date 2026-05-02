@@ -1,5 +1,22 @@
 # 开发日志
 
+## 2026-05-02: 打包测试用 jar
+
+### 已完成
+- 运行 `.\gradlew.bat build --offline` 重新打包测试构建。
+- 生成测试用主 jar：`build/libs/gtnhitemdocexporter-0.1.0-dev.jar`。
+
+### 遇到的问题
+- 无。
+
+### 决策
+- 测试时使用 `gtnhitemdocexporter-0.1.0-dev.jar`，不要使用 `sources` jar；`dev-dev` jar 保留给开发环境用途。
+
+### 验证
+- `.\gradlew.bat build --offline`：通过。
+
+---
+
 ## 2026-05-02: 完成 NEI 物品索引导出 MVP
 
 ### 已完成

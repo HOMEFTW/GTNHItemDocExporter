@@ -51,6 +51,12 @@
 | `item_index.md` | 人类可读 Markdown 文档 |
 | `last_export.log` | 最近一次导出数量、失败数和耗时 |
 
+### 构建产物
+| 文件 | 说明 |
+|------|------|
+| `build/libs/gtnhitemdocexporter-0.1.0-dev.jar` | 放入 GTNH 客户端 `mods` 目录测试的主 jar |
+| `build/libs/gtnhitemdocexporter-0.1.0-dev-sources.jar` | 源码 jar，不用于客户端测试 |
+
 ### Mixin
 - 暂无。
 

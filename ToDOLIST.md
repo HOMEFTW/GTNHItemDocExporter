@@ -1,7 +1,7 @@
 # TODO
 
 ## 当前计划
-- [ ] 将第一阶段导出的 `item_index.json` 安装到实际 GTNH 客户端进行游戏内验证。
+- [ ] 将 `build/libs/gtnhitemdocexporter-0.1.0-dev.jar` 放入实际 GTNH 客户端 `mods` 目录进行游戏内验证。
 
 ## 未来想法
 - [ ] 创建沿用 `gtnh-mod-installer` 架构的桌面 GUI，用鼠标点击生成 CraftTweaker `.zs` 脚本。
