@@ -1,1 +1,29 @@
 .worktrees/
+
+# Gradle
+.gradle/
+build/
+out/
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Minecraft run directories
+run/
+logs/
+
+# Build output
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
