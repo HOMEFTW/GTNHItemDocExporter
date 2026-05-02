@@ -14,6 +14,19 @@
 
 ---
 
+## 2026-05-02: 补充 ModTweaker 参考
+
+### Completed
+- 阅读 `GTNH LIB\ModTweaker-master` 的入口、命令注册和物品表达式输出辅助逻辑。
+
+### Issues Encountered
+- 无。
+
+### Decisions Made
+- 后续 Minecraft/NEI 集成阶段优先参考 ModTweaker 的 `new MCItemStack(stack).toString()` 思路生成脚本可用物品表达式，同时保留纯 Java `CraftTweakerNameFormatter` 作为 fallback。
+
+---
+
 ## 2026-05-02: 项目设计确认
 
 ### Completed

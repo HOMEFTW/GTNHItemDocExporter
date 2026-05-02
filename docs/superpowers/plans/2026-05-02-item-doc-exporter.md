@@ -32,6 +32,12 @@
 - `src/test/java/com/andgatech/gtnhitemdocexporter/export/ItemDocWritersTest.java`: JSON/CSV/Markdown writer tests.
 - `log.md`, `ToDOLIST.md`, `context.md`: Chinese project continuity docs.
 
+## Additional Reference Notes
+
+- `D:/Code/GTNH LIB/ModTweaker-master` is a CraftTweaker addon reference.
+- ModTweaker registers as `required-after:MineTweaker3` and exposes helper/log commands through MineTweaker APIs.
+- ModTweaker's `LogHelper.getStackDescription(ItemStack)` uses `new MCItemStack(stack).toString()` to produce script-usable item strings. The exporter should prefer this pattern when CraftTweaker classes are available, while keeping `CraftTweakerNameFormatter` as a pure fallback for unit-tested formatting.
+
 ## Task 1: Scaffold GTNH Addon Project
 
 **Files:**

@@ -51,3 +51,4 @@
 - 主数据源为 NEI `codechicken.nei.ItemList.items`。
 - 输出目录为 `<minecraft>/gtnh_item_doc_exporter/`。
 - GUI 脚本生成器是第二阶段，读取 `item_index.json`。
+- 参考 `GTNH LIB\ModTweaker-master`：其作为 CraftTweaker 附属模组使用 `MCItemStack.toString()` 输出可用于脚本的物品表达式。
