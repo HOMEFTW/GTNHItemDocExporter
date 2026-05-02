@@ -1,8 +1,6 @@
 # TODO List
 
 ## Current Plans
-- [ ] 审阅并确认 `docs/superpowers/specs/2026-05-02-item-doc-exporter-design.md`。
-- [ ] 编写实现计划。
 - [ ] 使用 GTNH addon 模板脚手架创建项目。
 - [ ] 实现 NEI 物品/方块索引导出 MVP。
 
@@ -13,6 +11,8 @@
 
 ## Completed
 - [x] 确认第一阶段选择路线 A：先做索引导出器。
+- [x] 审阅并确认 `docs/superpowers/specs/2026-05-02-item-doc-exporter-design.md`。
+- [x] 编写实现计划 `docs/superpowers/plans/2026-05-02-item-doc-exporter.md`。
 
 ## Rejected / Postponed
 - 暂不修改 NotEnoughItems 本体：维护成本高。
