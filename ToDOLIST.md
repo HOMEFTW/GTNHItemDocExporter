@@ -1,7 +1,8 @@
 # TODO
 
 ## 当前计划
-- [ ] 将 `build/libs/gtnhitemdocexporter-0.1.0-dev.jar` 放入实际 GTNH 客户端 `mods` 目录进行游戏内验证。
+- [ ] 改进英文名解析，降低 `englishName` 回退为 `item.*` / `tile.*` 的比例。
+- [ ] 确认 `AWWayofTime:fluidSigil:0` 中文名为空是否来自原模组显示名。
 
 ## 未来想法
 - [ ] 创建沿用 `gtnh-mod-installer` 架构的桌面 GUI，用鼠标点击生成 CraftTweaker `.zs` 脚本。
@@ -14,6 +15,8 @@
 - [x] 编写实现计划 `docs/superpowers/plans/2026-05-02-item-doc-exporter.md`。
 - [x] 使用 GTNH addon 模板脚手架创建项目。
 - [x] 实现 NEI 物品/方块索引导出 MVP。
+- [x] 将 `build/libs/gtnhitemdocexporter-0.1.0-dev.jar` 放入实际 GTNH 客户端并生成导出目录。
+- [x] 检查 `D:\Code\gtnh_item_doc_exporter` 的导出文件结构与条目数量。
 
 ## 拒绝 / 暂缓
 - 暂不修改 NotEnoughItems 本体：维护成本高。

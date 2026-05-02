@@ -1,5 +1,27 @@
 # 开发日志
 
+## 2026-05-02: 检查游戏内生成的导出目录
+
+### 已完成
+- 检查用户从游戏中复制出的 `D:\Code\gtnh_item_doc_exporter`。
+- 确认生成了 `item_index.json`、`item_index.csv`、`item_index.md` 和 `last_export.log`。
+- 确认 JSON 与 CSV 均为 57232 条，`last_export.log` 记录 `failureCount=0`。
+
+### 遇到的问题
+- **英文名回退率偏高**：30739 / 57232 条 `englishName` 仍为 `item.*` 或 `tile.*` 未本地化 key，占 53.71%。
+- **中文名空值极少**：仅 `AWWayofTime:fluidSigil:0` 的 `chineseName` 为空。
+
+### 决策
+- 当前导出结果可用于第一阶段 ID/CT 表达式文档测试。
+- 后续若 GUI 需要更可靠英文显示，应单独改进英文名解析逻辑。
+
+### 验证
+- JSON 可解析，`entryCount` 与实际 `entries` 数量一致。
+- CSV 可解析，行数与 JSON 一致。
+- `guid` 无重复，`registryId` 与 `ctExpression` 无空值。
+
+---
+
 ## 2026-05-02: 打包测试用 jar
 
 ### 已完成

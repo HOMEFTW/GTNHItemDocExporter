@@ -57,6 +57,11 @@
 | `build/libs/gtnhitemdocexporter-0.1.0-dev.jar` | 放入 GTNH 客户端 `mods` 目录测试的主 jar |
 | `build/libs/gtnhitemdocexporter-0.1.0-dev-sources.jar` | 源码 jar，不用于客户端测试 |
 
+### 已观察到的导出样本
+| 来源目录 | 条目数 | 失败数 | 语言 | 说明 |
+|----------|--------|--------|------|------|
+| `D:\Code\gtnh_item_doc_exporter` | 57232 | 0 | zh_CN | JSON/CSV/Markdown/last_export.log 均已生成 |
+
 ### Mixin
 - 暂无。
 
