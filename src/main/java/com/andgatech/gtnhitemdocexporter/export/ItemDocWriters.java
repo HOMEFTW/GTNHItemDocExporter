@@ -1,0 +1,119 @@
+package com.andgatech.gtnhitemdocexporter.export;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+public final class ItemDocWriters {
+
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
+    private ItemDocWriters() {}
+
+    public static void writeJson(ItemDocIndex index, File outputDir) throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                new File(outputDir, "item_index.json").toPath(),
+                StandardCharsets.UTF_8)) {
+            GSON.toJson(index, writer);
+        }
+    }
+
+    public static void writeCsv(List<ItemDocEntry> entries, File outputDir) throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                new File(outputDir, "item_index.csv").toPath(),
+                StandardCharsets.UTF_8)) {
+            writer.write(
+                    "modId,registryId,meta,ctExpression,chineseName,englishName,unlocalizedName,isBlock,guid,nbtSummary");
+            writer.newLine();
+            for (ItemDocEntry entry : entries) {
+                writer.write(csv(entry.modId));
+                writer.write(',');
+                writer.write(csv(entry.registryId));
+                writer.write(',');
+                writer.write(Integer.toString(entry.meta));
+                writer.write(',');
+                writer.write(csv(entry.ctExpression));
+                writer.write(',');
+                writer.write(csv(entry.chineseName));
+                writer.write(',');
+                writer.write(csv(entry.englishName));
+                writer.write(',');
+                writer.write(csv(entry.unlocalizedName));
+                writer.write(',');
+                writer.write(Boolean.toString(entry.isBlock));
+                writer.write(',');
+                writer.write(csv(entry.guid));
+                writer.write(',');
+                writer.write(csv(entry.nbtSummary));
+                writer.newLine();
+            }
+        }
+    }
+
+    public static void writeMarkdown(List<ItemDocEntry> entries, File outputDir) throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                new File(outputDir, "item_index.md").toPath(),
+                StandardCharsets.UTF_8)) {
+            String currentMod = null;
+            for (ItemDocEntry entry : entries) {
+                if (!entry.modId.equals(currentMod)) {
+                    currentMod = entry.modId;
+                    writer.newLine();
+                    writer.write("## " + escapeMarkdown(currentMod));
+                    writer.newLine();
+                    writer.newLine();
+                    writer.write("| 中文名 | 英文名 | CT 表达式 | registryId | meta | 是否方块 |");
+                    writer.newLine();
+                    writer.write("|---|---|---|---|---:|---|");
+                    writer.newLine();
+                }
+                writer.write("| " + escapeMarkdown(entry.chineseName)
+                        + " | " + escapeMarkdown(entry.englishName)
+                        + " | `" + entry.ctExpression + "`"
+                        + " | `" + entry.registryId + "`"
+                        + " | " + entry.meta
+                        + " | " + (entry.isBlock ? "是" : "否") + " |");
+                writer.newLine();
+            }
+        }
+    }
+
+    public static void writeLastExportLog(File outputDir, int entryCount, int failureCount, long elapsedMillis)
+            throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files.newBufferedWriter(
+                new File(outputDir, "last_export.log").toPath(),
+                StandardCharsets.UTF_8)) {
+            writer.write("entryCount=" + entryCount);
+            writer.newLine();
+            writer.write("failureCount=" + failureCount);
+            writer.newLine();
+            writer.write("elapsedMillis=" + elapsedMillis);
+            writer.newLine();
+        }
+    }
+
+    private static void ensureDir(File outputDir) throws IOException {
+        if (!outputDir.exists() && !outputDir.mkdirs()) {
+            throw new IOException("Failed to create output directory: " + outputDir);
+        }
+    }
+
+    private static String csv(String value) {
+        String safe = value == null ? "" : value;
+        return "\"" + safe.replace("\"", "\"\"") + "\"";
+    }
+
+    private static String escapeMarkdown(String value) {
+        return value == null ? "" : value.replace("|", "\\|").replace("\r", " ").replace("\n", " ");
+    }
+}
