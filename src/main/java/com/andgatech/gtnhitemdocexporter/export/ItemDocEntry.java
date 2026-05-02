@@ -14,7 +14,7 @@ public final class ItemDocEntry {
     public final String nbtSummary;
 
     public ItemDocEntry(String modId, String registryId, int meta, String ctExpression, String chineseName,
-            String englishName, String unlocalizedName, boolean isBlock, String guid, String nbtSummary) {
+        String englishName, String unlocalizedName, boolean isBlock, String guid, String nbtSummary) {
         this.modId = safe(modId);
         this.registryId = safe(registryId);
         this.meta = meta;

@@ -26,27 +26,29 @@ public final class MinecraftItemDocCollector {
         String registryId = String.valueOf(Item.itemRegistry.getNameForObject(stack.getItem()));
         int meta = stack.getItemDamage();
         String modId = registryId.contains(":") ? registryId.substring(0, registryId.indexOf(':')) : "";
-        String nbt = stack.hasTagCompound() ? stack.getTagCompound().toString() : "";
+        String nbt = stack.hasTagCompound() ? stack.getTagCompound()
+            .toString() : "";
         Block block = Block.getBlockFromItem(stack.getItem());
 
         return new ItemDocEntry(
-                modId,
-                registryId,
-                meta,
-                ctExpression(stack, registryId, meta),
-                names.currentName(stack),
-                names.englishName(stack),
-                stack.getUnlocalizedName(),
-                block != null && block != Blocks.air,
-                registryId + ":" + meta + (nbt.isEmpty() ? "" : "@" + Integer.toHexString(nbt.hashCode())),
-                NbtSummaryFormatter.summarize(nbt, includeNbtSummary, maxNbtSummaryLength));
+            modId,
+            registryId,
+            meta,
+            ctExpression(stack, registryId, meta),
+            names.currentName(stack),
+            names.englishName(stack),
+            stack.getUnlocalizedName(),
+            block != null && block != Blocks.air,
+            registryId + ":" + meta + (nbt.isEmpty() ? "" : "@" + Integer.toHexString(nbt.hashCode())),
+            NbtSummaryFormatter.summarize(nbt, includeNbtSummary, maxNbtSummaryLength));
     }
 
     private static String ctExpression(ItemStack stack, String registryId, int meta) {
         try {
             Constructor<?> constructor = craftTweakerStackConstructor();
             if (constructor != null) {
-                return constructor.newInstance(stack).toString();
+                return constructor.newInstance(stack)
+                    .toString();
             }
         } catch (Throwable ignored) {
             // Fall back below if CraftTweaker internals differ across GTNH versions.

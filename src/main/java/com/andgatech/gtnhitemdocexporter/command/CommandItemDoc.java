@@ -42,9 +42,12 @@ public final class CommandItemDoc extends CommandBase {
         }
         try {
             ItemIndexExportService.ExportResult result = service.exportNow();
-            sender.addChatMessage(new ChatComponentText(
-                    EnumChatFormatting.AQUA + "已导出 " + result.entryCount + " 个条目到 "
-                            + result.outputDir.getAbsolutePath()));
+            sender.addChatMessage(
+                new ChatComponentText(
+                    EnumChatFormatting.AQUA + "已导出 "
+                        + result.entryCount
+                        + " 个条目到 "
+                        + result.outputDir.getAbsolutePath()));
         } catch (Exception e) {
             sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "导出失败：" + e.getMessage()));
         }

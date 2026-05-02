@@ -13,8 +13,9 @@ public class CraftTweakerNameFormatterTest {
 
     @Test
     public void includesPositiveMeta() {
-        assertEquals("<gregtech:gt.metaitem.01:1234>",
-                CraftTweakerNameFormatter.format("gregtech:gt.metaitem.01", 1234));
+        assertEquals(
+            "<gregtech:gt.metaitem.01:1234>",
+            CraftTweakerNameFormatter.format("gregtech:gt.metaitem.01", 1234));
     }
 
     @Test

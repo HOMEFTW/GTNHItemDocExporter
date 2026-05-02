@@ -12,26 +12,26 @@ import com.google.gson.GsonBuilder;
 
 public final class ItemDocWriters {
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting()
+        .disableHtmlEscaping()
+        .create();
 
     private ItemDocWriters() {}
 
     public static void writeJson(ItemDocIndex index, File outputDir) throws IOException {
         ensureDir(outputDir);
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                new File(outputDir, "item_index.json").toPath(),
-                StandardCharsets.UTF_8)) {
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "item_index.json").toPath(), StandardCharsets.UTF_8)) {
             GSON.toJson(index, writer);
         }
     }
 
     public static void writeCsv(List<ItemDocEntry> entries, File outputDir) throws IOException {
         ensureDir(outputDir);
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                new File(outputDir, "item_index.csv").toPath(),
-                StandardCharsets.UTF_8)) {
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "item_index.csv").toPath(), StandardCharsets.UTF_8)) {
             writer.write(
-                    "modId,registryId,meta,ctExpression,chineseName,englishName,unlocalizedName,isBlock,guid,nbtSummary");
+                "modId,registryId,meta,ctExpression,chineseName,englishName,unlocalizedName,isBlock,guid,nbtSummary");
             writer.newLine();
             for (ItemDocEntry entry : entries) {
                 writer.write(csv(entry.modId));
@@ -60,9 +60,8 @@ public final class ItemDocWriters {
 
     public static void writeMarkdown(List<ItemDocEntry> entries, File outputDir) throws IOException {
         ensureDir(outputDir);
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                new File(outputDir, "item_index.md").toPath(),
-                StandardCharsets.UTF_8)) {
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "item_index.md").toPath(), StandardCharsets.UTF_8)) {
             String currentMod = null;
             for (ItemDocEntry entry : entries) {
                 if (!entry.modId.equals(currentMod)) {
@@ -76,23 +75,31 @@ public final class ItemDocWriters {
                     writer.write("|---|---|---|---|---:|---|");
                     writer.newLine();
                 }
-                writer.write("| " + escapeMarkdown(entry.chineseName)
-                        + " | " + escapeMarkdown(entry.englishName)
-                        + " | `" + entry.ctExpression + "`"
-                        + " | `" + entry.registryId + "`"
-                        + " | " + entry.meta
-                        + " | " + (entry.isBlock ? "是" : "否") + " |");
+                writer.write(
+                    "| " + escapeMarkdown(entry.chineseName)
+                        + " | "
+                        + escapeMarkdown(entry.englishName)
+                        + " | `"
+                        + entry.ctExpression
+                        + "`"
+                        + " | `"
+                        + entry.registryId
+                        + "`"
+                        + " | "
+                        + entry.meta
+                        + " | "
+                        + (entry.isBlock ? "是" : "否")
+                        + " |");
                 writer.newLine();
             }
         }
     }
 
     public static void writeLastExportLog(File outputDir, int entryCount, int failureCount, long elapsedMillis)
-            throws IOException {
+        throws IOException {
         ensureDir(outputDir);
-        try (BufferedWriter writer = Files.newBufferedWriter(
-                new File(outputDir, "last_export.log").toPath(),
-                StandardCharsets.UTF_8)) {
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "last_export.log").toPath(), StandardCharsets.UTF_8)) {
             writer.write("entryCount=" + entryCount);
             writer.newLine();
             writer.write("failureCount=" + failureCount);
@@ -114,6 +121,9 @@ public final class ItemDocWriters {
     }
 
     private static String escapeMarkdown(String value) {
-        return value == null ? "" : value.replace("|", "\\|").replace("\r", " ").replace("\n", " ");
+        return value == null ? ""
+            : value.replace("|", "\\|")
+                .replace("\r", " ")
+                .replace("\n", " ");
     }
 }

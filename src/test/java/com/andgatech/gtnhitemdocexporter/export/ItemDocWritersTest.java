@@ -13,10 +13,19 @@ public class ItemDocWritersTest {
 
     @Test
     public void writesAllFormats() throws Exception {
-        File dir = Files.createTempDirectory("item-doc-writers").toFile();
-        ItemDocEntry entry = new ItemDocEntry("gregtech", "gregtech:gt.metaitem.01", 1234,
-                "<gregtech:gt.metaitem.01:1234>", "示例物品", "Example Item", "item.example.name", false,
-                "gregtech:gt.metaitem.01:1234", "");
+        File dir = Files.createTempDirectory("item-doc-writers")
+            .toFile();
+        ItemDocEntry entry = new ItemDocEntry(
+            "gregtech",
+            "gregtech:gt.metaitem.01",
+            1234,
+            "<gregtech:gt.metaitem.01:1234>",
+            "示例物品",
+            "Example Item",
+            "item.example.name",
+            false,
+            "gregtech:gt.metaitem.01:1234",
+            "");
         ItemDocIndex index = new ItemDocIndex("2026-05-02T19:30:00+08:00", "zh_CN", Arrays.asList(entry));
 
         ItemDocWriters.writeJson(index, dir);

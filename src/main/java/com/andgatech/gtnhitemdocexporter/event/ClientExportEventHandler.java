@@ -2,12 +2,12 @@ package com.andgatech.gtnhitemdocexporter.event;
 
 import net.minecraftforge.event.world.WorldEvent;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-
 import com.andgatech.gtnhitemdocexporter.GTNHItemDocExporter;
 import com.andgatech.gtnhitemdocexporter.config.ExporterConfig;
 import com.andgatech.gtnhitemdocexporter.export.ItemIndexExportService;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 
 public final class ClientExportEventHandler {
 

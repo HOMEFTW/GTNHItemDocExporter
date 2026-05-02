@@ -13,10 +13,10 @@ import java.util.TimeZone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
-import codechicken.nei.ItemList;
-
 import com.andgatech.gtnhitemdocexporter.GTNHItemDocExporter;
 import com.andgatech.gtnhitemdocexporter.config.ExporterConfig;
+
+import codechicken.nei.ItemList;
 
 public final class ItemIndexExportService {
 
@@ -40,9 +40,9 @@ public final class ItemIndexExportService {
         failureCount = 0;
 
         MinecraftItemDocCollector collector = new MinecraftItemDocCollector(
-                new LanguageNameResolver(),
-                config.includeNbtSummary,
-                config.maxNbtSummaryLength);
+            new LanguageNameResolver(),
+            config.includeNbtSummary,
+            config.maxNbtSummaryLength);
         List<ItemDocEntry> entries = new ArrayList<>();
         Set<String> seen = new HashSet<>();
 
@@ -60,10 +60,10 @@ public final class ItemIndexExportService {
         }
 
         entries.sort(
-                Comparator.comparing((ItemDocEntry entry) -> entry.modId)
-                        .thenComparing(entry -> entry.registryId)
-                        .thenComparingInt(entry -> entry.meta)
-                        .thenComparing(entry -> entry.chineseName));
+            Comparator.comparing((ItemDocEntry entry) -> entry.modId)
+                .thenComparing(entry -> entry.registryId)
+                .thenComparingInt(entry -> entry.meta)
+                .thenComparing(entry -> entry.chineseName));
 
         ItemDocIndex index = new ItemDocIndex(nowIsoLike(), currentLanguage(), entries);
         File dir = outputDir();
@@ -83,7 +83,10 @@ public final class ItemIndexExportService {
 
     private static String currentLanguage() {
         try {
-            return Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+            return Minecraft.getMinecraft()
+                .getLanguageManager()
+                .getCurrentLanguage()
+                .getLanguageCode();
         } catch (Throwable ignored) {
             return "";
         }
@@ -96,6 +99,7 @@ public final class ItemIndexExportService {
     }
 
     public static final class ExportResult {
+
         public final int entryCount;
         public final int failureCount;
         public final long elapsedMillis;
