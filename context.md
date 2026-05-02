@@ -1,34 +1,34 @@
-# Project Context
+# 项目上下文
 
-## Basic Info
+## 基本信息
 - Mod Name: GTNHItemDocExporter
 - Mod ID: gtnhitemdocexporter
 - Package: com.andgatech.gtnhitemdocexporter
 - Target: MC 1.7.10 + GTNH 2.8.x
 
-## Implemented Content
+## 已实现内容
 
-### Machines
-| Name | Meta ID | Type | Status |
+### 机器
+| 名称 | Meta ID | 类型 | 状态 |
 |------|---------|------|--------|
 
-### Items
-| Name | Registration | Description |
+### 物品
+| 名称 | 注册 | 说明 |
 |------|--------------|-------------|
 
-### Blocks
-| Name | Registration | Description |
+### 方块
+| 名称 | 注册 | 说明 |
 |------|--------------|-------------|
 
-### Materials
+### 材料
 - 无。
 
-### Recipes
-| Recipe Pool | Type | Count |
+### 配方
+| Recipe Pool | 类型 | 数量 |
 |-------------|------|-------|
 
-### Config Options
-| Key | Default | Description |
+### 配置项
+| Key | 默认值 | 说明 |
 |-----|---------|-------------|
 | autoExportOnJoin | true | 进入世界后自动导出一次 |
 | writeJson | true | 写出 `item_index.json` |
@@ -36,19 +36,36 @@
 | writeMarkdown | true | 写出 `item_index.md` |
 | includeNbtSummary | true | 导出 NBT 摘要 |
 | maxNbtSummaryLength | 240 | NBT 摘要最大长度 |
-| forceEnglishLocale | en_US | 英文名解析语言 |
+| forceEnglishLocale | en_US | 预留的英文名解析语言配置；当前实现使用 `StatCollector.translateToFallback` |
 
-### Mixins
+### 命令
+| 命令 | 侧 | 说明 |
+|------|----|------|
+| `/itemdoc export` | 客户端 | 立即从 NEI 索引导出物品/方块文档 |
+
+### 导出文件
+| 文件 | 说明 |
+|------|------|
+| `item_index.json` | GUI 第二阶段使用的结构化索引 |
+| `item_index.csv` | 表格工具可读索引 |
+| `item_index.md` | 人类可读 Markdown 文档 |
+| `last_export.log` | 最近一次导出数量、失败数和耗时 |
+
+### Mixin
 - 暂无。
 
-## Dependencies
+## 依赖
 - NotEnoughItems
+- CraftTweaker / MineTweaker3（运行时依赖，编译期通过反射调用 `MCItemStack`，避免离线缓存版本差异）
 - Minecraft Forge 1.7.10
 - GTNH 2.8.x 环境
 
-## Architecture Notes
-- 第一阶段只实现游戏内索引导出 MVP。
-- 主数据源为 NEI `codechicken.nei.ItemList.items`。
+## 架构记录
+- 第一阶段已实现游戏内索引导出 MVP。
+- 主数据源为 NEI `codechicken.nei.ItemList.items`，等待 `ItemList.loadFinished` 后导出。
 - 输出目录为 `<minecraft>/gtnh_item_doc_exporter/`。
+- `ClientExportEventHandler` 在客户端世界加载后排队导出，每 40 tick 检查一次 NEI 是否就绪。
+- `CommandItemDoc` 通过 `ClientCommandHandler` 注册为客户端命令。
+- `MinecraftItemDocCollector` 收集 registry ID、meta、当前语言名称、英文名称、未本地化名称、方块标记、CraftTweaker 表达式和 NBT 摘要。
 - GUI 脚本生成器是第二阶段，读取 `item_index.json`。
 - 参考 `GTNH LIB\ModTweaker-master`：其作为 CraftTweaker 附属模组使用 `MCItemStack.toString()` 输出可用于脚本的物品表达式。
