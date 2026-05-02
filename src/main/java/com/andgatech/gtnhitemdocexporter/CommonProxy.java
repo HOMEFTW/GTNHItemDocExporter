@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
+        GTNHItemDocExporter.CONFIG.load(event.getSuggestedConfigurationFile());
         GTNHItemDocExporter.LOG.info(GTNHItemDocExporter.MOD_NAME + " at version " + Tags.VERSION + " preInit.");
     }
 
@@ -15,6 +16,6 @@ public class CommonProxy {
     }
 
     public void serverStarting(FMLServerStartingEvent event) {
-        GTNHItemDocExporter.LOG.info(GTNHItemDocExporter.MOD_NAME + " command registration pending.");
+        GTNHItemDocExporter.LOG.info(GTNHItemDocExporter.MOD_NAME + " server starting.");
     }
 }

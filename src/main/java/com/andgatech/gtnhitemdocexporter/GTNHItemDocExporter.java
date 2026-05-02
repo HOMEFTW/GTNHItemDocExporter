@@ -3,6 +3,9 @@ package com.andgatech.gtnhitemdocexporter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.andgatech.gtnhitemdocexporter.config.ExporterConfig;
+import com.andgatech.gtnhitemdocexporter.export.ItemIndexExportService;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -13,7 +16,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
     modid = GTNHItemDocExporter.MODID,
     version = Tags.VERSION,
     name = GTNHItemDocExporter.MOD_NAME,
-    dependencies = "required-after:NotEnoughItems;",
+    dependencies = "required-after:MineTweaker3;required-after:NotEnoughItems;",
     acceptedMinecraftVersions = "[1.7.10]")
 public class GTNHItemDocExporter {
 
@@ -24,6 +27,8 @@ public class GTNHItemDocExporter {
     public static final String RESOURCE_ROOT_ID = "gtnhitemdocexporter";
 
     public static final Logger LOG = LogManager.getLogger(MODID);
+    public static final ExporterConfig CONFIG = new ExporterConfig();
+    public static ItemIndexExportService exportService;
 
     @Mod.Instance
     public static GTNHItemDocExporter instance;
