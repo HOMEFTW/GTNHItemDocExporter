@@ -1,5 +1,29 @@
 # 开发日志
 
+## 2026-05-03: 增加 Forge OreDictionary 索引导出
+
+### 已完成
+- 新增 `OreDictionaryDocEntry`、`OreDictionaryDocIndex` 和 `MinecraftOreDictionaryDocCollector`。
+- 从 Forge `OreDictionary.getOreNames()` / `OreDictionary.getOres(oreName)` 收集矿物字典条目。
+- 新增 `ore_dictionary_index.json`、`ore_dictionary_index.csv`、`ore_dictionary_index.md` 写出逻辑。
+- 矿物字典条目包含 `oreName`、`ctExpression`、`itemCount`、包含物品 CT 表达式列表和 `guid`。
+- 自动导出和 `/itemdoc export` 现在会同时输出物品/方块索引、流体索引与矿物字典索引。
+- `last_export.log` 新增 `oreDictionaryEntryCount`。
+
+### 遇到的问题
+- **`build --offline` 首次失败**：Spotless 检查发现新增 Java 文件和部分换行格式不符合项目规则 → 运行 `.\gradlew.bat spotlessApply --offline` 后重新构建通过。
+
+### 决策
+- 不从 NEI 私有结构导出 OreDict；NEI 也是读取 Forge `OreDictionary`，直接使用 Forge 数据源更稳定。
+- GUI 后续读取 `ore_dictionary_index.json`，点击后直接填入 `<ore:...>` 表达式。
+
+### 验证
+- 先新增 `ItemDocWritersTest#writesOreDictionaryFormats` 并确认因缺少 OreDict 模型和 writer 编译失败。
+- `.\gradlew.bat test --offline`：通过。
+- `.\gradlew.bat build --offline`：通过。
+
+---
+
 ## 2026-05-03: 检查包含流体索引的游戏内导出目录
 
 ### 已完成

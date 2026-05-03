@@ -34,6 +34,14 @@ public final class ItemDocWriters {
         }
     }
 
+    public static void writeOreDictionaryJson(OreDictionaryDocIndex index, File outputDir) throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "ore_dictionary_index.json").toPath(), StandardCharsets.UTF_8)) {
+            GSON.toJson(index, writer);
+        }
+    }
+
     public static void writeCsv(List<ItemDocEntry> entries, File outputDir) throws IOException {
         ensureDir(outputDir);
         try (BufferedWriter writer = Files
@@ -91,6 +99,27 @@ public final class ItemDocWriters {
                 writer.write(Integer.toString(entry.viscosity));
                 writer.write(',');
                 writer.write(Boolean.toString(entry.gaseous));
+                writer.write(',');
+                writer.write(csv(entry.guid));
+                writer.newLine();
+            }
+        }
+    }
+
+    public static void writeOreDictionaryCsv(List<OreDictionaryDocEntry> entries, File outputDir) throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "ore_dictionary_index.csv").toPath(), StandardCharsets.UTF_8)) {
+            writer.write("oreName,ctExpression,itemCount,items,guid");
+            writer.newLine();
+            for (OreDictionaryDocEntry entry : entries) {
+                writer.write(csv(entry.oreName));
+                writer.write(',');
+                writer.write(csv(entry.ctExpression));
+                writer.write(',');
+                writer.write(Integer.toString(entry.itemCount));
+                writer.write(',');
+                writer.write(csv(String.join(" ", entry.items)));
                 writer.write(',');
                 writer.write(csv(entry.guid));
                 writer.newLine();
@@ -169,6 +198,33 @@ public final class ItemDocWriters {
         }
     }
 
+    public static void writeOreDictionaryMarkdown(List<OreDictionaryDocEntry> entries, File outputDir)
+        throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "ore_dictionary_index.md").toPath(), StandardCharsets.UTF_8)) {
+            writer.write("# Ore Dictionary Index");
+            writer.newLine();
+            writer.newLine();
+            writer.write("| OreDict 名称 | CT 表达式 | 物品数 | 示例物品 |");
+            writer.newLine();
+            writer.write("|---|---|---:|---|");
+            writer.newLine();
+            for (OreDictionaryDocEntry entry : entries) {
+                writer.write(
+                    "| " + escapeMarkdown(entry.oreName)
+                        + " | `"
+                        + entry.ctExpression
+                        + "` | "
+                        + entry.itemCount
+                        + " | "
+                        + escapeMarkdown(String.join(" ", entry.items))
+                        + " |");
+                writer.newLine();
+            }
+        }
+    }
+
     public static void writeLastExportLog(File outputDir, int entryCount, int failureCount, long elapsedMillis)
         throws IOException {
         writeLastExportLog(outputDir, entryCount, 0, failureCount, elapsedMillis);
@@ -176,12 +232,19 @@ public final class ItemDocWriters {
 
     public static void writeLastExportLog(File outputDir, int entryCount, int fluidEntryCount, int failureCount,
         long elapsedMillis) throws IOException {
+        writeLastExportLog(outputDir, entryCount, fluidEntryCount, 0, failureCount, elapsedMillis);
+    }
+
+    public static void writeLastExportLog(File outputDir, int entryCount, int fluidEntryCount,
+        int oreDictionaryEntryCount, int failureCount, long elapsedMillis) throws IOException {
         ensureDir(outputDir);
         try (BufferedWriter writer = Files
             .newBufferedWriter(new File(outputDir, "last_export.log").toPath(), StandardCharsets.UTF_8)) {
             writer.write("entryCount=" + entryCount);
             writer.newLine();
             writer.write("fluidEntryCount=" + fluidEntryCount);
+            writer.newLine();
+            writer.write("oreDictionaryEntryCount=" + oreDictionaryEntryCount);
             writer.newLine();
             writer.write("failureCount=" + failureCount);
             writer.newLine();

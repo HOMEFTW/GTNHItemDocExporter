@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.andgatech.gtnhitemdocexporter.GTNHItemDocExporter;
 import com.andgatech.gtnhitemdocexporter.config.ExporterConfig;
@@ -68,25 +69,45 @@ public final class ItemIndexExportService {
                 .thenComparingInt(entry -> entry.meta)
                 .thenComparing(entry -> entry.chineseName));
         List<FluidDocEntry> fluidEntries = collectFluidEntries();
+        List<OreDictionaryDocEntry> oreDictionaryEntries = collectOreDictionaryEntries();
 
         ItemDocIndex index = new ItemDocIndex(nowIsoLike(), currentLanguage(), entries);
         FluidDocIndex fluidIndex = new FluidDocIndex(nowIsoLike(), currentLanguage(), fluidEntries);
+        OreDictionaryDocIndex oreDictionaryIndex = new OreDictionaryDocIndex(
+            nowIsoLike(),
+            currentLanguage(),
+            oreDictionaryEntries);
         File dir = outputDir();
         if (config.writeJson) {
             ItemDocWriters.writeJson(index, dir);
             ItemDocWriters.writeFluidJson(fluidIndex, dir);
+            ItemDocWriters.writeOreDictionaryJson(oreDictionaryIndex, dir);
         }
         if (config.writeCsv) {
             ItemDocWriters.writeCsv(entries, dir);
             ItemDocWriters.writeFluidCsv(fluidEntries, dir);
+            ItemDocWriters.writeOreDictionaryCsv(oreDictionaryEntries, dir);
         }
         if (config.writeMarkdown) {
             ItemDocWriters.writeMarkdown(entries, dir);
             ItemDocWriters.writeFluidMarkdown(fluidEntries, dir);
+            ItemDocWriters.writeOreDictionaryMarkdown(oreDictionaryEntries, dir);
         }
         long elapsed = System.currentTimeMillis() - started;
-        ItemDocWriters.writeLastExportLog(dir, entries.size(), fluidEntries.size(), failureCount, elapsed);
-        return new ExportResult(entries.size(), fluidEntries.size(), failureCount, elapsed, dir);
+        ItemDocWriters.writeLastExportLog(
+            dir,
+            entries.size(),
+            fluidEntries.size(),
+            oreDictionaryEntries.size(),
+            failureCount,
+            elapsed);
+        return new ExportResult(
+            entries.size(),
+            fluidEntries.size(),
+            oreDictionaryEntries.size(),
+            failureCount,
+            elapsed,
+            dir);
     }
 
     private List<FluidDocEntry> collectFluidEntries() {
@@ -113,6 +134,24 @@ public final class ItemIndexExportService {
         return entries;
     }
 
+    private List<OreDictionaryDocEntry> collectOreDictionaryEntries() {
+        MinecraftOreDictionaryDocCollector collector = new MinecraftOreDictionaryDocCollector();
+        List<OreDictionaryDocEntry> entries = new ArrayList<>();
+        for (String oreName : OreDictionary.getOreNames()) {
+            try {
+                OreDictionaryDocEntry entry = collector.collect(oreName);
+                if (entry.itemCount > 0) {
+                    entries.add(entry);
+                }
+            } catch (Throwable t) {
+                failureCount++;
+                GTNHItemDocExporter.LOG.warn("Failed to export ore dictionary entry {}", oreName, t);
+            }
+        }
+        entries.sort(Comparator.comparing(entry -> entry.oreName));
+        return entries;
+    }
+
     private static String currentLanguage() {
         try {
             return Minecraft.getMinecraft()
@@ -134,13 +173,20 @@ public final class ItemIndexExportService {
 
         public final int entryCount;
         public final int fluidEntryCount;
+        public final int oreDictionaryEntryCount;
         public final int failureCount;
         public final long elapsedMillis;
         public final File outputDir;
 
         public ExportResult(int entryCount, int fluidEntryCount, int failureCount, long elapsedMillis, File outputDir) {
+            this(entryCount, fluidEntryCount, 0, failureCount, elapsedMillis, outputDir);
+        }
+
+        public ExportResult(int entryCount, int fluidEntryCount, int oreDictionaryEntryCount, int failureCount,
+            long elapsedMillis, File outputDir) {
             this.entryCount = entryCount;
             this.fluidEntryCount = fluidEntryCount;
+            this.oreDictionaryEntryCount = oreDictionaryEntryCount;
             this.failureCount = failureCount;
             this.elapsedMillis = elapsedMillis;
             this.outputDir = outputDir;

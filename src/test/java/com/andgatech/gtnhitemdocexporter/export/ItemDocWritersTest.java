@@ -65,6 +65,31 @@ public class ItemDocWritersTest {
         assertTrue(read(new File(dir, "fluid_index.md")).contains("熔融太阳能级硅"));
     }
 
+    @Test
+    public void writesOreDictionaryFormats() throws Exception {
+        File dir = Files.createTempDirectory("ore-dictionary-doc-writers")
+            .toFile();
+        OreDictionaryDocEntry entry = new OreDictionaryDocEntry(
+            "stickWood",
+            "<ore:stickWood>",
+            Arrays.asList("<minecraft:stick>", "<BiomesOPlenty:misc:1>"),
+            "stickWood");
+        OreDictionaryDocIndex index = new OreDictionaryDocIndex(
+            "2026-05-03T11:30:00+08:00",
+            "zh_CN",
+            Arrays.asList(entry));
+
+        ItemDocWriters.writeOreDictionaryJson(index, dir);
+        ItemDocWriters.writeOreDictionaryCsv(index.entries, dir);
+        ItemDocWriters.writeOreDictionaryMarkdown(index.entries, dir);
+        ItemDocWriters.writeLastExportLog(dir, 1, 2, 1, 0, 12L);
+
+        assertTrue(read(new File(dir, "ore_dictionary_index.json")).contains("\"oreName\": \"stickWood\""));
+        assertTrue(read(new File(dir, "ore_dictionary_index.csv")).contains("<ore:stickWood>"));
+        assertTrue(read(new File(dir, "ore_dictionary_index.md")).contains("stickWood"));
+        assertTrue(read(new File(dir, "last_export.log")).contains("oreDictionaryEntryCount=1"));
+    }
+
     private static String read(File file) throws Exception {
         return new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
     }

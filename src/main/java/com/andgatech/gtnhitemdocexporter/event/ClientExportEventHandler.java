@@ -47,9 +47,10 @@ public final class ClientExportEventHandler {
             exportedThisWorld = true;
             exportQueued = false;
             GTNHItemDocExporter.LOG.info(
-                "Exported {} item doc entries and {} fluid doc entries to {}",
+                "Exported {} item doc entries, {} fluid doc entries and {} ore dictionary entries to {}",
                 result.entryCount,
                 result.fluidEntryCount,
+                result.oreDictionaryEntryCount,
                 result.outputDir);
         } catch (Exception e) {
             exportQueued = false;
