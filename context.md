@@ -73,6 +73,11 @@
 |----------|--------|--------|------|------|
 | `D:\Code\gtnh_item_doc_exporter` | 1576 | 0 | zh_CN | 流体 JSON/CSV/Markdown 均已生成；`ZZZ-NxerCustoms.zs` 中 18 个 `<liquid:...>` 均可匹配 |
 
+### 已观察到的矿物字典导出样本
+| 来源目录 | 条目数 | 失败数 | 语言 | 说明 |
+|----------|--------|--------|------|------|
+| `D:\Code\gtnh_item_doc_exporter` | 22205 | 0 | zh_CN | 矿物字典 JSON/CSV/Markdown 均已生成；`ZZZ-NxerCustoms.zs` 中 21 个 `<ore:...>` 均可匹配 |
+
 ### Mixin
 - 暂无。
 

@@ -1,5 +1,28 @@
 # 开发日志
 
+## 2026-05-03: 检查包含矿物字典索引的游戏内导出目录
+
+### 已完成
+- 检查用户从游戏中复制出的 `D:\Code\gtnh_item_doc_exporter`。
+- 确认生成了 `ore_dictionary_index.json`、`ore_dictionary_index.csv`、`ore_dictionary_index.md`。
+- 确认 `last_export.log` 记录 `entryCount=57228`、`fluidEntryCount=1576`、`oreDictionaryEntryCount=22205`、`failureCount=0`。
+- 确认 OreDict JSON 条目数与 CSV 行数一致，且 `oreName` 与 `ctExpression` 均无重复。
+- 交叉检查 `ZZZ-NxerCustoms.zs` 中 21 个 `<ore:...>`，均可在 `ore_dictionary_index.json` 中找到。
+
+### 遇到的问题
+- **通配 meta 示例存在**：OreDict 包含物品列表中有 203 个 `:32767>` 表达式，来自 Forge `OreDictionary.WILDCARD_VALUE`；不影响直接使用 `<ore:...>`。
+- **少量注册名质量问题**：包含 2 个 `GalacticraftMars:item.null` 形式的物品表达式，看起来来自原模组注册名或显示名质量问题；不影响矿物字典条目本身。
+
+### 决策
+- 当前 `ore_dictionary_index.*` 可用于 GUI 的 `<ore:...>` 搜索和填入功能。
+- GUI 应优先插入 `ctExpression` 的 `<ore:...>`，包含物品列表只作为辅助识别信息。
+
+### 验证
+- 使用 Python 解析 `ore_dictionary_index.json` 成功。
+- 使用 CSV 解析器统计 `ore_dictionary_index.csv` 行数成功。
+
+---
+
 ## 2026-05-03: 增加 Forge OreDictionary 索引导出
 
 ### 已完成

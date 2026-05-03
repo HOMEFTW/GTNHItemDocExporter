@@ -24,6 +24,7 @@
 - [x] 从 Forge `FluidRegistry` 导出 `fluid_index.json`、`fluid_index.csv`、`fluid_index.md`。
 - [x] 检查包含 `fluid_index.*` 的游戏内导出目录，并确认 `ZZZ-NxerCustoms.zs` 中的流体均可匹配。
 - [x] 从 Forge `OreDictionary` 导出 `ore_dictionary_index.json`、`ore_dictionary_index.csv`、`ore_dictionary_index.md`。
+- [x] 检查包含 `ore_dictionary_index.*` 的游戏内导出目录，并确认 `ZZZ-NxerCustoms.zs` 中的矿物字典引用均可匹配。
 
 ## 拒绝 / 暂缓
 - 暂不修改 NotEnoughItems 本体：维护成本高。
