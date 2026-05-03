@@ -14,6 +14,7 @@
 - [ ] 后续考虑导出配方索引，辅助更复杂的脚本生成。
 
 ## 已完成
+- [x] 发布前更新 README 和版本号：模组版本 `1.0.0`，README 链接到配套 GUI `GTNHItemDocScriptBuilder` 并说明两者关系。
 - [x] 确认第一阶段选择路线 A：先做索引导出器。
 - [x] 审阅并确认 `docs/superpowers/specs/2026-05-02-item-doc-exporter-design.md`。
 - [x] 编写实现计划 `docs/superpowers/plans/2026-05-02-item-doc-exporter.md`。

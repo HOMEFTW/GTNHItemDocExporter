@@ -2,6 +2,7 @@
 
 ## 基本信息
 - Mod Name: GTNHItemDocExporter
+- Version: 1.0.0
 - Mod ID: gtnhitemdocexporter
 - Package: com.andgatech.gtnhitemdocexporter
 - Target: MC 1.7.10 + GTNH 2.8.x
@@ -60,8 +61,8 @@
 ### 构建产物
 | 文件 | 说明 |
 |------|------|
-| `build/libs/gtnhitemdocexporter-0.1.0-dev.jar` | 放入 GTNH 客户端 `mods` 目录测试的主 jar |
-| `build/libs/gtnhitemdocexporter-0.1.0-dev-sources.jar` | 源码 jar，不用于客户端测试 |
+| `build/libs/gtnhitemdocexporter-1.0.0.jar` | 放入 GTNH 客户端 `mods` 目录测试和发布的主 jar |
+| `build/libs/gtnhitemdocexporter-1.0.0-sources.jar` | 源码 jar，不用于客户端测试 |
 
 ### 已观察到的导出样本
 | 来源目录 | 条目数 | 失败数 | 语言 | 说明 |
@@ -97,7 +98,7 @@
 - `MinecraftFluidDocCollector` 从 `FluidRegistry.getRegisteredFluids()` 收集流体注册名、当前语言名称、英文名称、未本地化名称、温度、密度、粘度、气体标记和 `<liquid:...>` 表达式。
 - `MinecraftOreDictionaryDocCollector` 从 Forge `OreDictionary` 收集 `oreName`、`<ore:...>` 表达式和该条目包含的物品 CT 表达式列表。
 - `ItemDocWriters` 同时负责写出 `item_index.*`、`fluid_index.*` 与 `ore_dictionary_index.*`。
-- GUI 脚本生成器是第二阶段，读取 `item_index.json`。
+- GUI 脚本生成器 [`GTNHItemDocScriptBuilder`](https://github.com/HOMEFTW/GTNHItemDocScriptBuilder) 是第二阶段，读取 `item_index.json`、`fluid_index.json` 和 `ore_dictionary_index.json`。
 - GUI 后续应同时读取 `fluid_index.json`，用于 GT RA2 `.fluidInputs(...)`、`.fluidOutputs(...)` 和 `RecipeRemover.remove(...)` 的流体参数。
 - GUI 后续应同时读取 `ore_dictionary_index.json`，用于配方输入中的 `<ore:...>`。
 - 参考 `GTNH LIB\ModTweaker-master`：其作为 CraftTweaker 附属模组使用 `MCItemStack.toString()` 输出可用于脚本的物品表达式。

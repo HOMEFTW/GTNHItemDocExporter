@@ -1,5 +1,18 @@
 # 开发日志
 
+## 2026-05-03: 发布前版本和 README
+
+### 已完成
+- 将 `gradle.properties` 的 `modVersion` 更新为 `1.0.0`。
+- 新增中文 `README.md`，说明模组用途、导出文件、使用流程和构建方式。
+- README 链接到 GitHub 仓库 `GTNHItemDocExporter` 与配套 GUI `GTNHItemDocScriptBuilder`，并说明二者关系。
+- 更新 `context.md` 和 `ToDOLIST.md` 中的版本与发布记录。
+
+### 决策
+- release 主产物使用 `build/libs/gtnhitemdocexporter-1.0.0.jar`；sources jar 只作为源码辅助产物，不作为客户端安装主 jar。
+
+---
+
 ## 2026-05-03: 检查包含矿物字典索引的游戏内导出目录
 
 ### 已完成
