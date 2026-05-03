@@ -63,7 +63,12 @@
 ### 已观察到的导出样本
 | 来源目录 | 条目数 | 失败数 | 语言 | 说明 |
 |----------|--------|--------|------|------|
-| `D:\Code\gtnh_item_doc_exporter` | 57232 | 0 | zh_CN | JSON/CSV/Markdown/last_export.log 均已生成 |
+| `D:\Code\gtnh_item_doc_exporter` | 57228 | 0 | zh_CN | 物品/方块 JSON/CSV/Markdown 均已生成 |
+
+### 已观察到的流体导出样本
+| 来源目录 | 条目数 | 失败数 | 语言 | 说明 |
+|----------|--------|--------|------|------|
+| `D:\Code\gtnh_item_doc_exporter` | 1576 | 0 | zh_CN | 流体 JSON/CSV/Markdown 均已生成；`ZZZ-NxerCustoms.zs` 中 18 个 `<liquid:...>` 均可匹配 |
 
 ### Mixin
 - 暂无。

@@ -1,5 +1,28 @@
 # 开发日志
 
+## 2026-05-03: 检查包含流体索引的游戏内导出目录
+
+### 已完成
+- 检查用户从游戏中复制出的 `D:\Code\gtnh_item_doc_exporter`。
+- 确认生成了 `item_index.json`、`item_index.csv`、`item_index.md`、`fluid_index.json`、`fluid_index.csv`、`fluid_index.md` 和 `last_export.log`。
+- 确认 `last_export.log` 记录 `entryCount=57228`、`fluidEntryCount=1576`、`failureCount=0`。
+- 确认 JSON 条目数与 CSV 行数一致，且物品/流体 `guid` 与 `ctExpression` 均无重复。
+- 交叉检查 `ZZZ-NxerCustoms.zs` 中 18 个 `<liquid:...>`，均可在 `fluid_index.json` 中找到。
+
+### 遇到的问题
+- **英文名仍大量回退为 lang key**：物品 `englishName` 有 30735 条为 `item.*` / `tile.*` 形式；流体 `englishName` 1576 条均为 `fluid.*.name` 或类似 key。
+- **少量中文名缺失或未翻译**：`AWWayofTime:fluidSigil:0` 的 `chineseName` 为空；流体 `aquaregiaoth`、`lcl` 的 `chineseName` 看起来仍是未翻译 key。
+
+### 决策
+- 本次导出数据结构可用于 GUI 继续开发，特别是流体搜索和 RA2 流体参数选择。
+- 英文名质量改进仍作为后续任务，不阻塞中文 GUI 与脚本生成。
+
+### 验证
+- 使用 Python 解析 `item_index.json` 与 `fluid_index.json` 成功。
+- 使用 CSV 解析器统计 `item_index.csv` 与 `fluid_index.csv` 行数成功。
+
+---
+
 ## 2026-05-03: 增加 Forge 流体索引导出
 
 ### 已完成

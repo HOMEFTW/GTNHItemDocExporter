@@ -2,7 +2,9 @@
 
 ## 当前计划
 - [ ] 改进英文名解析，降低 `englishName` 回退为 `item.*` / `tile.*` 的比例。
+- [ ] 改进流体英文名解析，避免 `englishName` 全部回退为 `fluid.*.name`。
 - [ ] 确认 `AWWayofTime:fluidSigil:0` 中文名为空是否来自原模组显示名。
+- [ ] 确认流体 `aquaregiaoth`、`lcl` 中文名显示为 lang key 是否来自原模组未提供翻译。
 
 ## 未来想法
 - [ ] 创建沿用 `gtnh-mod-installer` 架构的桌面 GUI，用鼠标点击生成 CraftTweaker `.zs` 脚本。
@@ -19,6 +21,7 @@
 - [x] 将 `build/libs/gtnhitemdocexporter-0.1.0-dev.jar` 放入实际 GTNH 客户端并生成导出目录。
 - [x] 检查 `D:\Code\gtnh_item_doc_exporter` 的导出文件结构与条目数量。
 - [x] 从 Forge `FluidRegistry` 导出 `fluid_index.json`、`fluid_index.csv`、`fluid_index.md`。
+- [x] 检查包含 `fluid_index.*` 的游戏内导出目录，并确认 `ZZZ-NxerCustoms.zs` 中的流体均可匹配。
 
 ## 拒绝 / 暂缓
 - 暂不修改 NotEnoughItems 本体：维护成本高。
