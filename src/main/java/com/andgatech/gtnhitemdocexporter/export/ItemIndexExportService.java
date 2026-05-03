@@ -7,11 +7,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import com.andgatech.gtnhitemdocexporter.GTNHItemDocExporter;
 import com.andgatech.gtnhitemdocexporter.config.ExporterConfig;
@@ -64,21 +67,50 @@ public final class ItemIndexExportService {
                 .thenComparing(entry -> entry.registryId)
                 .thenComparingInt(entry -> entry.meta)
                 .thenComparing(entry -> entry.chineseName));
+        List<FluidDocEntry> fluidEntries = collectFluidEntries();
 
         ItemDocIndex index = new ItemDocIndex(nowIsoLike(), currentLanguage(), entries);
+        FluidDocIndex fluidIndex = new FluidDocIndex(nowIsoLike(), currentLanguage(), fluidEntries);
         File dir = outputDir();
         if (config.writeJson) {
             ItemDocWriters.writeJson(index, dir);
+            ItemDocWriters.writeFluidJson(fluidIndex, dir);
         }
         if (config.writeCsv) {
             ItemDocWriters.writeCsv(entries, dir);
+            ItemDocWriters.writeFluidCsv(fluidEntries, dir);
         }
         if (config.writeMarkdown) {
             ItemDocWriters.writeMarkdown(entries, dir);
+            ItemDocWriters.writeFluidMarkdown(fluidEntries, dir);
         }
         long elapsed = System.currentTimeMillis() - started;
-        ItemDocWriters.writeLastExportLog(dir, entries.size(), failureCount, elapsed);
-        return new ExportResult(entries.size(), failureCount, elapsed, dir);
+        ItemDocWriters.writeLastExportLog(dir, entries.size(), fluidEntries.size(), failureCount, elapsed);
+        return new ExportResult(entries.size(), fluidEntries.size(), failureCount, elapsed, dir);
+    }
+
+    private List<FluidDocEntry> collectFluidEntries() {
+        MinecraftFluidDocCollector collector = new MinecraftFluidDocCollector();
+        List<FluidDocEntry> entries = new ArrayList<>();
+        Set<String> seen = new HashSet<>();
+        for (Map.Entry<String, Fluid> registeredFluid : FluidRegistry.getRegisteredFluids()
+            .entrySet()) {
+            try {
+                Fluid fluid = registeredFluid.getValue();
+                if (fluid == null) {
+                    continue;
+                }
+                FluidDocEntry entry = collector.collect(registeredFluid.getKey(), fluid);
+                if (seen.add(entry.guid)) {
+                    entries.add(entry);
+                }
+            } catch (Throwable t) {
+                failureCount++;
+                GTNHItemDocExporter.LOG.warn("Failed to export fluid {}", registeredFluid.getKey(), t);
+            }
+        }
+        entries.sort(Comparator.comparing(entry -> entry.fluidName));
+        return entries;
     }
 
     private static String currentLanguage() {
@@ -101,12 +133,14 @@ public final class ItemIndexExportService {
     public static final class ExportResult {
 
         public final int entryCount;
+        public final int fluidEntryCount;
         public final int failureCount;
         public final long elapsedMillis;
         public final File outputDir;
 
-        public ExportResult(int entryCount, int failureCount, long elapsedMillis, File outputDir) {
+        public ExportResult(int entryCount, int fluidEntryCount, int failureCount, long elapsedMillis, File outputDir) {
             this.entryCount = entryCount;
+            this.fluidEntryCount = fluidEntryCount;
             this.failureCount = failureCount;
             this.elapsedMillis = elapsedMillis;
             this.outputDir = outputDir;

@@ -39,6 +39,32 @@ public class ItemDocWritersTest {
         assertTrue(read(new File(dir, "last_export.log")).contains("entryCount=1"));
     }
 
+    @Test
+    public void writesFluidFormats() throws Exception {
+        File dir = Files.createTempDirectory("fluid-doc-writers")
+            .toFile();
+        FluidDocEntry entry = new FluidDocEntry(
+            "molten.siliconsolargrade",
+            "<liquid:molten.siliconsolargrade>",
+            "熔融太阳能级硅",
+            "Molten Solar Grade Silicon",
+            "fluid.molten.siliconsolargrade",
+            1687,
+            3000,
+            6000,
+            false,
+            "molten.siliconsolargrade");
+        FluidDocIndex index = new FluidDocIndex("2026-05-03T10:30:00+08:00", "zh_CN", Arrays.asList(entry));
+
+        ItemDocWriters.writeFluidJson(index, dir);
+        ItemDocWriters.writeFluidCsv(index.entries, dir);
+        ItemDocWriters.writeFluidMarkdown(index.entries, dir);
+
+        assertTrue(read(new File(dir, "fluid_index.json")).contains("\"fluidName\": \"molten.siliconsolargrade\""));
+        assertTrue(read(new File(dir, "fluid_index.csv")).contains("<liquid:molten.siliconsolargrade>"));
+        assertTrue(read(new File(dir, "fluid_index.md")).contains("熔融太阳能级硅"));
+    }
+
     private static String read(File file) throws Exception {
         return new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
     }

@@ -1,5 +1,28 @@
 # 开发日志
 
+## 2026-05-03: 增加 Forge 流体索引导出
+
+### 已完成
+- 新增 `FluidDocEntry`、`FluidDocIndex` 和 `MinecraftFluidDocCollector`，从 `FluidRegistry.getRegisteredFluids()` 收集流体。
+- 新增 `fluid_index.json`、`fluid_index.csv`、`fluid_index.md` 写出逻辑。
+- 流体条目包含 `fluidName`、`ctExpression`、中文名、英文名、未本地化名、温度、密度、粘度、是否气体和 `guid`。
+- 自动导出和 `/itemdoc export` 现在会同时输出物品/方块索引与流体索引。
+- `last_export.log` 新增 `fluidEntryCount`。
+
+### 遇到的问题
+- **`build --offline` 首次失败**：Spotless 检查发现新文件换行格式不符合项目规则 → 运行 `.\gradlew.bat spotlessApply --offline` 后重新构建通过。
+
+### 决策
+- 流体 CraftTweaker 表达式按 Forge 注册名生成 `<liquid:fluidName>`，用于后续 GUI 直接插入 RA2 `.fluidInputs(...)` / `.fluidOutputs(...)`。
+- 流体导出跟随现有 `writeJson`、`writeCsv`、`writeMarkdown` 配置开关，不额外增加独立开关。
+
+### 验证
+- 先新增 `ItemDocWritersTest#writesFluidFormats` 并确认因缺少流体模型编译失败。
+- `.\gradlew.bat test --offline`：通过。
+- `.\gradlew.bat build --offline`：通过。
+
+---
+
 ## 2026-05-02: 检查游戏内生成的导出目录
 
 ### 已完成

@@ -26,6 +26,14 @@ public final class ItemDocWriters {
         }
     }
 
+    public static void writeFluidJson(FluidDocIndex index, File outputDir) throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "fluid_index.json").toPath(), StandardCharsets.UTF_8)) {
+            GSON.toJson(index, writer);
+        }
+    }
+
     public static void writeCsv(List<ItemDocEntry> entries, File outputDir) throws IOException {
         ensureDir(outputDir);
         try (BufferedWriter writer = Files
@@ -53,6 +61,38 @@ public final class ItemDocWriters {
                 writer.write(csv(entry.guid));
                 writer.write(',');
                 writer.write(csv(entry.nbtSummary));
+                writer.newLine();
+            }
+        }
+    }
+
+    public static void writeFluidCsv(List<FluidDocEntry> entries, File outputDir) throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "fluid_index.csv").toPath(), StandardCharsets.UTF_8)) {
+            writer.write(
+                "fluidName,ctExpression,chineseName,englishName,unlocalizedName,temperature,density,viscosity,gaseous,guid");
+            writer.newLine();
+            for (FluidDocEntry entry : entries) {
+                writer.write(csv(entry.fluidName));
+                writer.write(',');
+                writer.write(csv(entry.ctExpression));
+                writer.write(',');
+                writer.write(csv(entry.chineseName));
+                writer.write(',');
+                writer.write(csv(entry.englishName));
+                writer.write(',');
+                writer.write(csv(entry.unlocalizedName));
+                writer.write(',');
+                writer.write(Integer.toString(entry.temperature));
+                writer.write(',');
+                writer.write(Integer.toString(entry.density));
+                writer.write(',');
+                writer.write(Integer.toString(entry.viscosity));
+                writer.write(',');
+                writer.write(Boolean.toString(entry.gaseous));
+                writer.write(',');
+                writer.write(csv(entry.guid));
                 writer.newLine();
             }
         }
@@ -95,12 +135,53 @@ public final class ItemDocWriters {
         }
     }
 
+    public static void writeFluidMarkdown(List<FluidDocEntry> entries, File outputDir) throws IOException {
+        ensureDir(outputDir);
+        try (BufferedWriter writer = Files
+            .newBufferedWriter(new File(outputDir, "fluid_index.md").toPath(), StandardCharsets.UTF_8)) {
+            writer.write("# Fluid Index");
+            writer.newLine();
+            writer.newLine();
+            writer.write("| 中文名 | 英文名 | CT 表达式 | fluidName | 温度 | 密度 | 粘度 | 气体 |");
+            writer.newLine();
+            writer.write("|---|---|---|---|---:|---:|---:|---|");
+            writer.newLine();
+            for (FluidDocEntry entry : entries) {
+                writer.write(
+                    "| " + escapeMarkdown(entry.chineseName)
+                        + " | "
+                        + escapeMarkdown(entry.englishName)
+                        + " | `"
+                        + entry.ctExpression
+                        + "` | `"
+                        + entry.fluidName
+                        + "` | "
+                        + entry.temperature
+                        + " | "
+                        + entry.density
+                        + " | "
+                        + entry.viscosity
+                        + " | "
+                        + (entry.gaseous ? "是" : "否")
+                        + " |");
+                writer.newLine();
+            }
+        }
+    }
+
     public static void writeLastExportLog(File outputDir, int entryCount, int failureCount, long elapsedMillis)
         throws IOException {
+        writeLastExportLog(outputDir, entryCount, 0, failureCount, elapsedMillis);
+    }
+
+    public static void writeLastExportLog(File outputDir, int entryCount, int fluidEntryCount, int failureCount,
+        long elapsedMillis) throws IOException {
         ensureDir(outputDir);
         try (BufferedWriter writer = Files
             .newBufferedWriter(new File(outputDir, "last_export.log").toPath(), StandardCharsets.UTF_8)) {
             writer.write("entryCount=" + entryCount);
+            writer.newLine();
+            writer.write("fluidEntryCount=" + fluidEntryCount);
             writer.newLine();
             writer.write("failureCount=" + failureCount);
             writer.newLine();

@@ -7,6 +7,7 @@
 ## 未来想法
 - [ ] 创建沿用 `gtnh-mod-installer` 架构的桌面 GUI，用鼠标点击生成 CraftTweaker `.zs` 脚本。
 - [ ] 在 GUI 中加入物品搜索、配方格编辑、脚本模板、ZS 预览和文件输出。
+- [ ] 在 GUI 中读取 `fluid_index.json`，为 GT RA2 的 `fluidInputs` / `fluidOutputs` 提供可搜索流体选择器。
 - [ ] 后续考虑导出配方索引，辅助更复杂的脚本生成。
 
 ## 已完成
@@ -17,6 +18,7 @@
 - [x] 实现 NEI 物品/方块索引导出 MVP。
 - [x] 将 `build/libs/gtnhitemdocexporter-0.1.0-dev.jar` 放入实际 GTNH 客户端并生成导出目录。
 - [x] 检查 `D:\Code\gtnh_item_doc_exporter` 的导出文件结构与条目数量。
+- [x] 从 Forge `FluidRegistry` 导出 `fluid_index.json`、`fluid_index.csv`、`fluid_index.md`。
 
 ## 拒绝 / 暂缓
 - 暂不修改 NotEnoughItems 本体：维护成本高。

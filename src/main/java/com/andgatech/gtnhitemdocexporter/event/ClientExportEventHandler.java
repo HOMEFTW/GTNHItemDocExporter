@@ -46,7 +46,11 @@ public final class ClientExportEventHandler {
             ItemIndexExportService.ExportResult result = service.exportNow();
             exportedThisWorld = true;
             exportQueued = false;
-            GTNHItemDocExporter.LOG.info("Exported {} item doc entries to {}", result.entryCount, result.outputDir);
+            GTNHItemDocExporter.LOG.info(
+                "Exported {} item doc entries and {} fluid doc entries to {}",
+                result.entryCount,
+                result.fluidEntryCount,
+                result.outputDir);
         } catch (Exception e) {
             exportQueued = false;
             GTNHItemDocExporter.LOG.error("Failed to auto-export item doc index", e);

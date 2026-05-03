@@ -49,6 +49,9 @@
 | `item_index.json` | GUI 第二阶段使用的结构化索引 |
 | `item_index.csv` | 表格工具可读索引 |
 | `item_index.md` | 人类可读 Markdown 文档 |
+| `fluid_index.json` | GUI 读取的结构化流体索引，包含 `<liquid:...>` 表达式 |
+| `fluid_index.csv` | 表格工具可读流体索引 |
+| `fluid_index.md` | 人类可读流体 Markdown 文档 |
 | `last_export.log` | 最近一次导出数量、失败数和耗时 |
 
 ### 构建产物
@@ -78,5 +81,8 @@
 - `ClientExportEventHandler` 在客户端世界加载后排队导出，每 40 tick 检查一次 NEI 是否就绪。
 - `CommandItemDoc` 通过 `ClientCommandHandler` 注册为客户端命令。
 - `MinecraftItemDocCollector` 收集 registry ID、meta、当前语言名称、英文名称、未本地化名称、方块标记、CraftTweaker 表达式和 NBT 摘要。
+- `MinecraftFluidDocCollector` 从 `FluidRegistry.getRegisteredFluids()` 收集流体注册名、当前语言名称、英文名称、未本地化名称、温度、密度、粘度、气体标记和 `<liquid:...>` 表达式。
+- `ItemDocWriters` 同时负责写出 `item_index.*` 与 `fluid_index.*`。
 - GUI 脚本生成器是第二阶段，读取 `item_index.json`。
+- GUI 后续应同时读取 `fluid_index.json`，用于 GT RA2 `.fluidInputs(...)`、`.fluidOutputs(...)` 和 `RecipeRemover.remove(...)` 的流体参数。
 - 参考 `GTNH LIB\ModTweaker-master`：其作为 CraftTweaker 附属模组使用 `MCItemStack.toString()` 输出可用于脚本的物品表达式。
