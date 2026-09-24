@@ -2,7 +2,39 @@
 
 repositories {
     maven {
+        name = "GTNH Maven"
+        url = uri("https://nexus.gtnewhorizons.com/repository/public/")
+        mavenContent {
+            includeGroup("com.gtnewhorizons")
+            includeGroupByRegex("com\\.gtnewhorizons\\..+")
+        }
+    }
+    maven {
+        name = "Aliyun Public"
+        url = uri("https://maven.aliyun.com/repository/public")
+    }
+    maven {
+        name = "Aliyun Central"
+        url = uri("https://maven.aliyun.com/repository/central")
+    }
+    maven {
+        name = "Aliyun Google"
+        url = uri("https://maven.aliyun.com/repository/google")
+    }
+    maven {
         name = "Tencent Maven Mirror"
         url = uri("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
+    }
+    maven {
+        name = "HuaweiCloud Maven"
+        url = uri("https://repo.huaweicloud.com/repository/maven/")
+    }
+    mavenCentral()
+    maven {
+        name = "JitPack"
+        url = uri("https://jitpack.io")
+        mavenContent {
+            includeGroupByRegex("com\\.github\\..+")
+        }
     }
 }

@@ -27,3 +27,6 @@ logs/
 # Build output
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
+
+# Local indexes
+.codegraph/

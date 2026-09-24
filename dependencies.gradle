@@ -6,12 +6,17 @@
  *
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html
  */
-dependencies {
-    elytraModpackVersion {
-        setGtnhVersion("2.8.4")
-    }
+elytraModpackVersion {
+    gtnhVersion = "2.9.0-beta-3"
+    // elytra-conventions v1.1.x treats this as useCache; true lets the local manifest cache be used.
+    manifestNoCache = true
+    attachManifestVersionToJar = false
+}
 
-    implementation(gtnh("NotEnoughItems"))
+dependencies {
+    implementation(gtnhDev("NotEnoughItems"))
+    runtimeOnlyNonPublishable(gtnhDev("CraftTweaker")) { transitive = false }
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.hamcrest:hamcrest-core:1.3")
 }
@@ -23,6 +28,6 @@ dependencies {
  * @param classifier the classifier
  * @return the generated notation
  */
-String gtnh(String name, String classifier = "dev") {
-    return project.elytraModpackVersion.gtnhdev(name)
+String gtnhDev(String name, String classifier = "dev") {
+    return elytraModpackVersion.gtnh(name, classifier)
 }

@@ -1,64 +1,89 @@
 # GTNHItemDocExporter
 
-`GTNHItemDocExporter` 是一个面向 GT New Horizons 的 Minecraft 1.7.10 Forge 客户端辅助模组，用来在进入游戏后导出脚本编写所需的索引文档。
+从正在运行的 **GT New Horizons** 客户端导出物品、流体和矿物字典索引，为查找资源和编写 CraftTweaker 脚本提供真实游戏数据。
 
-- GitHub：<https://github.com/HOMEFTW/GTNHItemDocExporter>
-- 当前版本：`1.0.0`
-- 工作室：`Andgatech`
-- 配套 GUI 应用：[`GTNHItemDocScriptBuilder`](https://github.com/HOMEFTW/GTNHItemDocScriptBuilder)
+**模组版本：1.0.0 · 目标整合包：GTNH 2.9.0-beta-3 · 工作室：Andgatech**
 
-## 项目关系
+[下载 JAR](https://github.com/HOMEFTW/GTNHItemDocExporter/releases) · [配套脚本编辑器](https://github.com/HOMEFTW/GTNHItemDocScriptBuilder) · [反馈问题](https://github.com/HOMEFTW/GTNHItemDocExporter/issues)
 
-本模组负责从真实 GTNH 客户端环境里导出数据；[`GTNHItemDocScriptBuilder`](https://github.com/HOMEFTW/GTNHItemDocScriptBuilder) 负责读取这些数据并辅助生成 CraftTweaker / ModTweaker / GregTech `.zs` 脚本。
+## 快速开始
 
-推荐流程：
+1. 在 [Releases](https://github.com/HOMEFTW/GTNHItemDocExporter/releases) 下载面向 GTNH **2.9.0-beta-3** 的 `gtnhitemdocexporter-1.0.0.jar`。
+2. 将 JAR 放入对应客户端实例的 `mods` 文件夹。`-dev.jar` 和 `-sources.jar` 不用于正常游戏安装。
+3. 启动客户端并进入世界。默认在 NEI 物品列表加载完成后自动导出一次。
+4. 在该实例的 `gtnh_item_doc_exporter` 文件夹查看结果。
+5. 启动 [GTNHItemDocScriptBuilder](https://github.com/HOMEFTW/GTNHItemDocScriptBuilder)，选择导出的 `item_index.json`，即可搜索资源并编写脚本。
 
-1. 把本模组 jar 放入 GTNH 客户端 `mods` 目录。
-2. 启动一次游戏，让模组导出索引文件。
-3. 在 `GTNHItemDocScriptBuilder` 中选择导出的 `item_index.json`。
-4. 在 GUI 里搜索物品、流体、矿物字典和 recipe map，生成或维护 `.zs` 脚本。
+需要重新导出时，在游戏内执行：
 
-## 导出内容
+```text
+/itemdoc export
+```
 
-模组会在客户端导出目录生成：
+如果提示 NEI 尚未就绪，等待其物品列表加载完成后重试。导出使用当前客户端实际加载的数据；升级整合包或变更模组后，应重新生成索引。
 
-- `item_index.json`：物品和方块索引，包含中文名、英文名、注册 ID、meta、CraftTweaker 表达式等。
-- `fluid_index.json`：Forge `FluidRegistry` 中的流体索引，包含流体名、中文名、英文名和 `<liquid:...>` 表达式。
-- `ore_dictionary_index.json`：矿物字典索引，包含 `oreName`、`<ore:...>` 表达式和关联物品。
+## 导出结果
 
-这些文件是 GUI 应用的主要数据来源。
+默认输出到 `<客户端实例>/gtnh_item_doc_exporter/`：
 
-## 使用方法
+| 文件 | 内容 |
+| --- | --- |
+| `item_index.json` | 物品与方块：注册 ID、meta、名称、CraftTweaker 表达式、NBT 摘要等 |
+| `fluid_index.json` | 流体：注册名、名称、物理属性和 `<liquid:...>` 表达式 |
+| `ore_dictionary_index.json` | 矿物字典：矿词名称、`<ore:...>` 表达式及成员物品 |
+| `*_index.csv` | 三类索引的表格版本 |
+| `*_index.md` | 三类索引的 Markdown 文档 |
+| `last_export.log` | 最近一次导出的条目数量、失败统计和耗时 |
 
-1. 下载 release 中的 `gtnhitemdocexporter-1.0.0.jar`。
-2. 放入 GTNH 客户端的 `mods` 目录。
-3. 启动游戏并进入主菜单或世界。
-4. 根据配置或命令生成导出目录。
-5. 把导出目录中的 `item_index.json` 提供给 `GTNHItemDocScriptBuilder`。
+配套编辑器以 JSON 为数据源。请把三个 JSON 文件保留在同一目录，选择物品索引时会自动尝试加载流体和矿物字典索引。
 
-如果 `fluid_index.json` 和 `ore_dictionary_index.json` 与 `item_index.json` 在同一目录，GUI 会自动加载它们。
+名称取决于客户端语言和模组提供的翻译。某些英文名或中文名可能回退为语言键；NBT 摘要用于查看，不等同于完整 NBT 数据。
 
-## 构建
+## 配置
 
-需要 JDK 和 Gradle Wrapper：
+首次运行后，在客户端 `config` 目录生成的本模组配置文件中调整：
+
+| 选项 | 默认值 | 用途 |
+| --- | --- | --- |
+| `autoExportOnJoin` | `true` | 进入世界后自动导出 |
+| `writeJson` | `true` | 输出 JSON，供配套编辑器使用 |
+| `writeCsv` | `true` | 输出 CSV |
+| `writeMarkdown` | `true` | 输出 Markdown |
+| `includeNbtSummary` | `true` | 包含 NBT 摘要 |
+| `maxNbtSummaryLength` | `240` | NBT 摘要的最大长度 |
+
+`forceEnglishLocale` 当前为预留项；英文名实际通过 Minecraft 的回退翻译机制解析。
+
+## 兼容性与验证范围
+
+| 组件 | 本次基线 |
+| --- | --- |
+| Minecraft / Forge | `1.7.10` / `10.13.4.1614` |
+| GTNH | `2.9.0-beta-3` |
+| NotEnoughItems | `2.8.130-GTNH` |
+| CraftTweaker | `3.4.8` |
+
+本模组在客户端导出数据，目标依赖版本由 GTNH manifest 解析。已完成构建、9 项单元测试，以及目标 NEI 的就绪字段和 CraftTweaker 物品表达式接口核验。
+
+**本次尚未在 beta3 客户端完成游戏内导出验证。** 实际使用时应确认三类索引有内容，并检查 `last_export.log` 中的失败统计。旧版本的导出样本不代表本次基线的运行结果。
+
+## 从源码构建
+
+构建需要 **JDK 25**，仓库包含 **Gradle 9.2.1 Wrapper**；Minecraft 模组代码仍面向 Java 8。
 
 ```powershell
+git clone https://github.com/HOMEFTW/GTNHItemDocExporter.git
+cd GTNHItemDocExporter
+# 将 JAVA_HOME 指向本机安装的 JDK 25
 .\gradlew.bat build
 ```
 
-构建产物位于：
+首次构建需要联网下载依赖。构建产物在 `build/libs/`，玩家使用不带 `-dev` 或 `-sources` 后缀的 JAR。仅运行测试可使用 `./gradlew.bat test`。
+
+## 两个项目如何配合
 
 ```text
-build/libs/gtnhitemdocexporter-1.0.0.jar
+GTNH 客户端 → Exporter 导出索引 → ScriptBuilder 编辑配方 → .zs 脚本
 ```
 
-## 适用范围
-
-- Minecraft `1.7.10`
-- Forge `10.13.4.1614`
-- GT New Horizons 客户端环境
-- 用于辅助 CraftTweaker / ModTweaker / GregTech 脚本编写
-
-## 许可证
-
-请以仓库中的实际许可证文件为准。
+Exporter 负责读取真实游戏注册数据；[ScriptBuilder](https://github.com/HOMEFTW/GTNHItemDocScriptBuilder) 负责搜索、配方设计、脚本编辑与保存。导出器本身不修改配方，也不执行编辑器生成的脚本。

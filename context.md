@@ -5,7 +5,9 @@
 - Version: 1.0.0
 - Mod ID: gtnhitemdocexporter
 - Package: com.andgatech.gtnhitemdocexporter
-- Target: MC 1.7.10 + GTNH 2.8.x
+- Target: MC 1.7.10 + GTNH 2.9.0-beta-3
+- Build JDK: `JAVA_HOME` 指向 Zulu25；验证时使用 `D:\Code\.tools\gradle-home-java25` 复用已缓存的 Azul JDK8 toolchain
+- Manifest: `elytra.manifest.version = 2.9.0-beta-3`；`dependencies.gradle` 使用 `elytraModpackVersion.gtnh(...)` 解析 GTNH 模组版本
 
 ## 已实现内容
 
@@ -83,10 +85,17 @@
 - 暂无。
 
 ## 依赖
-- NotEnoughItems
-- CraftTweaker / MineTweaker3（运行时依赖，编译期通过反射调用 `MCItemStack`，避免离线缓存版本差异）
+- NotEnoughItems `2.8.130-GTNH`
+- CraftTweaker `3.4.8` / MineTweaker3（运行时依赖，编译期通过反射调用 `MCItemStack`，避免离线缓存版本差异）
 - Minecraft Forge 1.7.10
-- GTNH 2.8.x 环境
+- GTNH 2.9.0-beta-3 环境
+
+## 验证状态（2026-09-24）
+- 已按本地 `2.9.0-beta-3.json` 对齐两个版本声明。
+- JDK 25 + Gradle 9.2.1，使用 `--gradle-user-home D:\Code\.tools\gradle-home-java25 compileJava build`：通过；9 项测试通过。
+- 已通过 `javap` 核验 beta3 NEI 的 `ItemList.items/loadFinished` 和 CraftTweaker 的 `MCItemStack(ItemStack)/toString()`。
+- Forge/MC 版本未变，流体与矿词使用原有注册表 API，导出 JSON 格式不变。
+- 未启动 beta3 客户端；进入世界后自动导出、手动命令、三类实际数量/失败数仍需游戏内验证。上面的历史样本不是 beta3 的验证结果。
 
 ## 架构记录
 - 第一阶段已实现游戏内索引导出 MVP。

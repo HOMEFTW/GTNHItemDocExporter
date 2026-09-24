@@ -1,6 +1,7 @@
 # TODO
 
 ## 当前计划
+- [ ] 在 GTNH 2.9.0-beta-3 客户端验证自动/手动导出，检查三类索引和失败数。
 - [ ] 改进英文名解析，降低 `englishName` 回退为 `item.*` / `tile.*` 的比例。
 - [ ] 改进流体英文名解析，避免 `englishName` 全部回退为 `fluid.*.name`。
 - [ ] 确认 `AWWayofTime:fluidSigil:0` 中文名为空是否来自原模组显示名。
@@ -14,6 +15,8 @@
 - [ ] 后续考虑导出配方索引，辅助更复杂的脚本生成。
 
 ## 已完成
+- [x] 升级至 GTNH 2.9.0-beta-3，完成构建、9 项单元测试和目标依赖接口核验。
+- [x] 将项目移植到 GTNH `2.9.0-beta-1`，并完成 `compileJava`、`build` 和 jar 打包验证。
 - [x] 发布前更新 README 和版本号：模组版本 `1.0.0`，README 链接到配套 GUI `GTNHItemDocScriptBuilder` 并说明两者关系。
 - [x] 确认第一阶段选择路线 A：先做索引导出器。
 - [x] 审阅并确认 `docs/superpowers/specs/2026-05-02-item-doc-exporter-design.md`。

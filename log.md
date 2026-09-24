@@ -1,5 +1,39 @@
 # 开发日志
 
+## 2026-09-24：升级 GTNH 2.9.0-beta-3
+- 在已有未提交 beta1 迁移基础上，将 `dependencies.gradle` 和 `elytra.manifest.version` 同步为 beta3；保留原有工具链、镜像与用户修改。
+- manifest 对应 NEI `2.8.130-GTNH`、CraftTweaker `3.4.8`，导出结构与业务逻辑不变。
+- 联网完成 `compileJava build`；9 项测试通过，主 jar 已生成。首次受限网络解析阻塞，离线检查明确缺少新 NEI，允许联网后构建成功。
+- 通过目标 dev jar 核验 NEI 就绪字段、物品列表和 CraftTweaker 反射构造方法。
+- 限制：未运行 beta3 游戏客户端，不能将构建或历史索引样本视为本次游戏内验证。
+- 未提交、推送或发布。
+
+## 2026-06-09: 移植到 GTNH 2.9 beta 1
+
+### 已完成
+- 将 GTNH 构建插件升级为 `gtnhsettingsconvention 2.0.20`，Gradle wrapper 升级为腾讯云镜像的 `gradle-9.2.1-bin.zip`。
+- 在 `gradle.properties` 中声明 `elytra.manifest.version = 2.9.0-beta-1`，并将构建 JDK 说明更新为 Zulu25。
+- 在 `dependencies.gradle` 中将目标 manifest 从 `2.8.4` 改为 `2.9.0-beta-1`，并用 `elytraModpackVersion.gtnh(...)` 解析 GTNH 模组依赖。
+- 将 `NotEnoughItems` 迁移到 manifest 驱动依赖；2.9 beta 1 manifest 解析版本为 `2.8.101-GTNH`。
+- 为开发运行环境补充 `CraftTweaker` runtime 依赖；2.9 beta 1 manifest 解析版本为 `3.4.7`，源码仍通过反射调用 `MCItemStack`，不增加编译期硬依赖。
+- 补齐项目级 Maven 镜像与回退仓库，包括阿里云、腾讯云、华为云、GTNH Maven、Maven Central 和 JitPack。
+- 将 `.codegraph/` 加入 `.gitignore`，避免提交本地 CodeGraph 索引。
+- 使用 `JAVA_HOME=C:\Program Files\Zulu\zulu-25` 与 `D:\Code\.tools\gradle-home-java25` 验证 `compileJava` 和 `build` 通过。
+
+### 遇到的问题
+- **首次解析 `elytra-conventions v1.1.2` 失败**：项目级仓库缺少 JitPack 回退，Gradle 只在腾讯 Maven 查找 `com.github.ElytraServers` 插件 jar → 在 `repositories.gradle` 中补充 JitPack 与 GTNH Maven 等仓库。
+- **临时 Gradle home 下载 JDK8 超时**：`D:\Code\.tools\gradle-home-2.9.0-beta-1` 需要从 foojay 拉取 Azul JDK8，但网络超时 → 改用已缓存 JDK8 的 `D:\Code\.tools\gradle-home-java25` 完成验证。
+
+### 决策
+- 本次不修改 Java 业务逻辑；2.9 beta 1 下 NEI API 编译面保持兼容。
+- 保留 `@Mod` 中的 `MineTweaker3` 运行时 modid 依赖；manifest 依赖使用 GitHub repo 名 `CraftTweaker`。
+
+### 验证
+- `D:\Code\.gtnh-manifests\gradlew-offline.ps1 --gradle-user-home D:\Code\.tools\gradle-home-java25 compileJava`：通过。
+- `D:\Code\.gtnh-manifests\gradlew-offline.ps1 --gradle-user-home D:\Code\.tools\gradle-home-java25 build`：通过。
+
+---
+
 ## 2026-05-03: 发布前版本和 README
 
 ### 已完成

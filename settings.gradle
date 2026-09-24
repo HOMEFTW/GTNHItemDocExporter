@@ -1,6 +1,26 @@
 pluginManagement {
     repositories {
         maven {
+            name "Aliyun Gradle Plugin"
+            url "https://maven.aliyun.com/repository/gradle-plugin"
+        }
+        maven {
+            name "Aliyun Public"
+            url "https://maven.aliyun.com/repository/public"
+        }
+        maven {
+            name "Aliyun Google"
+            url "https://maven.aliyun.com/repository/google"
+        }
+        maven {
+            name "Tencent Maven Public"
+            url "https://mirrors.cloud.tencent.com/nexus/repository/maven-public/"
+        }
+        maven {
+            name "HuaweiCloud Maven"
+            url "https://repo.huaweicloud.com/repository/maven/"
+        }
+        maven {
             // RetroFuturaGradle
             name "GTNH Maven"
             url "https://nexus.gtnewhorizons.com/repository/public/"
@@ -9,21 +29,21 @@ pluginManagement {
                 includeGroupByRegex("com\\.gtnewhorizons\\..+")
             }
         }
-        maven {
-            name "Tencent Maven Mirror"
-            url "https://mirrors.cloud.tencent.com/nexus/repository/maven-public/"
-        }
         gradlePluginPortal()
+        mavenCentral()
         maven {
-            name "Jitpack"
+            name "JitPack"
             url "https://jitpack.io"
+            mavenContent {
+                includeGroupByRegex("com\\.github\\..+")
+            }
         }
         mavenLocal()
     }
 }
 
 plugins {
-    id 'com.gtnewhorizons.gtnhsettingsconvention' version '1.0.50'
+    id 'com.gtnewhorizons.gtnhsettingsconvention' version '2.0.20'
 }
 
 rootProject.name = "GTNHItemDocExporter"
